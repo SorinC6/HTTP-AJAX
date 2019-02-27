@@ -12,11 +12,14 @@ const ListContainer = styled.div`
 const FriendsList = (props) => {
 
    return(
-      <ListContainer>
-         {
-            props.friends.map(fr=>(<Friend fr={fr}/>))
-         }
-      </ListContainer>
+      <div>
+         <button>Add Friend</button>
+         <ListContainer>
+            {
+               props.friends.map(fr=>(<Friend fr={fr}/>))
+            }
+         </ListContainer>
+      </div>
    )
 }
 

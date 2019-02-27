@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import FriendList from './components/FriendsList';
+import AddFriend from './components/AddFriend';
 import './App.css';
+import { Route } from 'react-router-dom';
 
 class App extends Component {
 	state = {
@@ -11,7 +13,7 @@ class App extends Component {
 	};
 
 	componentDidMount() {
-      this.startSpinner();
+		this.startSpinner();
 		axios
 			.get('http://localhost:5000/friends')
 			.then((res) => this.setFriends(res.data))
@@ -19,7 +21,7 @@ class App extends Component {
 	}
 
 	setFriends = (friend) => {
-      this.stopSpinner();
+		this.stopSpinner();
 		this.setState({ friends: friend });
 	};
 
@@ -39,7 +41,10 @@ class App extends Component {
 		return (
 			<div className="App">
 				<h1>Friends App Lambda HTTP-AJAX</h1>
-            <FriendList friends={this.state.friends}/>
+				{/* <FriendList friends={this.state.friends} /> */}
+
+            <Route path="/" render={props => <FriendList {...props} friends={this.state.friends}/> }/>
+            <Route path="/add-form" render={props => <AddFriend {...props}/>}/>
 			</div>
 		);
 	}
