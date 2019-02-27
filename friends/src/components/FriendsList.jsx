@@ -26,7 +26,7 @@ const FriendsList = (props) => {
 	return (
 		<div>
 			<LinkWrapper to="/add-form">Add Friend</LinkWrapper>
-			<ListContainer>{props.friends.map((fr, i) => <Friend key={i} fr={fr} />)}</ListContainer>
+			<ListContainer>{props.friends.map((fr, i) => <Friend key={i} fr={fr} {...props}/>)}</ListContainer>
 		</div>
 	);
 };
