@@ -25,8 +25,8 @@ class App extends Component {
 			loading: false,
 			emptyFriend: {
 				name: '',
-				age: null,
-				email: ''
+				age: '',
+            email: '',
 			}
 		};
 	}
@@ -55,12 +55,22 @@ class App extends Component {
 			.catch((err) => this.setState({ deleteError: err.message }));
 	};
 
-	updateFriend = (id) => {
+	populateInput = (id) => {
 		console.log(id);
-		this.setState({ emptyFriend: this.state.friends.find((fr) => fr.id === id) });
+      this.setState({ emptyFriend: this.state.friends.find((fr) => fr.id === id) });
+      
+	};
+
+	updateFriend = () => {
+      console.log(this.state.emptyFriend.id)
+		axios
+			.put(`http://localhost:5000/friends/${this.state.emptyFriend.id}`, this.state.emptyFriend)
+			.then((res) => this.setFriends(res.data))
+			.catch((err) => console.log(err));
 	};
 
 	handleChanges = (e) => {
+      e.persist();
 		this.setState((prevState) => {
 			return {
 				emptyFriend: {
@@ -110,7 +120,7 @@ class App extends Component {
 							{...props}
 							friends={this.state.friends}
 							deleteFriend={this.deleteFriend}
-							updateFriend={this.updateFriend}
+							updateFriend={this.populateInput}
 						/>
 					)}
 				/>
@@ -124,7 +134,7 @@ class App extends Component {
 					render={(props) => (
 						<UpdateFriend
 							{...props}
-							updateFr={this.updateFriend}
+							updateFriend={this.updateFriend}
 							handleChanges={this.handleChanges}
 							item={this.state.emptyFriend}
 						/>
