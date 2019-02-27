@@ -26,8 +26,8 @@ class AddFriend extends React.Component {
 	};
 
 	postFriend = () => {
-      console.log('post freind');
-      this.props.postNewFriend(this.state.friend);
+		console.log('post freind');
+		this.props.postNewFriend(this.state.friend);
 		this.props.history.push('/');
 	};
 

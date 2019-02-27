@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const FriendDiv = styled.div`
 	border-bottom: 1px solid black;
@@ -26,6 +27,9 @@ const Friend = (props) => {
 			<h2>{props.fr.name}</h2>
 			<p>{props.fr.age}</p>
 			<p>{props.fr.email}</p>
+			<Link to="update-form" onClick={() => props.updateFriend(props.fr.id)}>
+				Update Friend
+			</Link>
 		</FriendDiv>
 	);
 };
