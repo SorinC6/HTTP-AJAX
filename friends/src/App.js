@@ -8,7 +8,8 @@ import { Route } from 'react-router-dom';
 class App extends Component {
 	state = {
 		friends: [],
-		error: null,
+      error: null,
+      postError:'',
 		loading: false
 	};
 
@@ -19,6 +20,13 @@ class App extends Component {
 			.then((res) => this.setFriends(res.data))
 			.catch((err) => this.setError(err));
 	}
+
+	addNewFriend = (friend) => {
+      console.log('test test');
+      axios.post('http://localhost:5000/friends',friend)
+         .then( (res) => this.setFriends(res.data) )
+         .catch( (err) => this.setState({postError:err}))
+	};
 
 	setFriends = (friend) => {
 		this.stopSpinner();
@@ -43,8 +51,11 @@ class App extends Component {
 				<h1>Friends App Lambda HTTP-AJAX</h1>
 				{/* <FriendList friends={this.state.friends} /> */}
 
-            <Route path="/" render={props => <FriendList {...props} friends={this.state.friends}/> }/>
-            <Route path="/add-form" render={props => <AddFriend {...props}/>}/>
+				<Route exact path="/" render={(props) => <FriendList {...props} friends={this.state.friends} />} />
+				<Route
+					path="/add-form"
+					render={(props) => <AddFriend {...props} postNewFriend={this.addNewFriend} />}
+				/>
 			</div>
 		);
 	}

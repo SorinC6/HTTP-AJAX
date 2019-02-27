@@ -16,6 +16,21 @@ class AddFriend extends React.Component {
 		}
 	};
 
+	handleChanges = (e) => {
+		this.setState({
+			friend: {
+				...this.state.friend,
+				[e.target.name]: e.target.value
+			}
+		});
+	};
+
+	postFriend = () => {
+      console.log('post freind');
+      this.props.postNewFriend(this.state.friend);
+		this.props.history.push('/');
+	};
+
 	render() {
 		return (
 			<FromWrapper>
