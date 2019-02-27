@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import FriendList from './components/FriendsList';
-
 import './App.css';
 
 class App extends Component {
