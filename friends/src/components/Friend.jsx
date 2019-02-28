@@ -24,8 +24,15 @@ const DeleteButton = styled.div`
 `;
 
 const WrapperDiv = styled.div`
-   text-align:center;
-`
+	text-align: center;
+	box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.15);
+	transition: 0.20s ease-in-out;
+
+   p {
+      padding:3px;
+      margin-bottom:2px;
+   }
+`;
 
 const LinkWrapper = styled(Link)`
    text-decoration:none;

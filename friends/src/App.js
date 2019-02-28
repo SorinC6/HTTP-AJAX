@@ -6,6 +6,7 @@ import UpdateFriend from './components/UpdateFriend';
 import styled from 'styled-components';
 import './App.css';
 import { Route } from 'react-router-dom';
+import { Confirm } from 'semantic-ui-react';
 
 const StyledContainer = styled.div`
 	padding: 20px;
@@ -23,10 +24,11 @@ class App extends Component {
 			postError: '',
 			deleteError: '',
 			loading: false,
+			open: false,
 			emptyFriend: {
 				name: '',
 				age: '',
-            email: '',
+				email: ''
 			}
 		};
 	}
@@ -49,6 +51,8 @@ class App extends Component {
 
 	deleteFriend = (id) => {
 		//console.log(id)
+		this.show();
+      
 		axios
 			.delete(`http://localhost:5000/friends/${id}`)
 			.then((res) => this.setFriends(res.data))
@@ -57,12 +61,11 @@ class App extends Component {
 
 	populateInput = (id) => {
 		console.log(id);
-      this.setState({ emptyFriend: this.state.friends.find((fr) => fr.id === id) });
-      
+		this.setState({ emptyFriend: this.state.friends.find((fr) => fr.id === id) });
 	};
 
 	updateFriend = () => {
-      console.log(this.state.emptyFriend.id)
+		console.log(this.state.emptyFriend.id);
 		axios
 			.put(`http://localhost:5000/friends/${this.state.emptyFriend.id}`, this.state.emptyFriend)
 			.then((res) => this.setFriends(res.data))
@@ -70,7 +73,7 @@ class App extends Component {
 	};
 
 	handleChanges = (e) => {
-      e.persist();
+		e.persist();
 		this.setState((prevState) => {
 			return {
 				emptyFriend: {
@@ -97,6 +100,10 @@ class App extends Component {
 	stopSpinner = () => {
 		this.setState({ loading: false });
 	};
+
+	show = () => this.setState({ open: true });
+	handleConfirm = () => this.setState({ open: false });
+	handleCancel = () => this.setState({ open: false });
 
 	render() {
 		if (this.state.loading) {
@@ -139,6 +146,12 @@ class App extends Component {
 							item={this.state.emptyFriend}
 						/>
 					)}
+				/>
+				<Confirm
+					open={this.state.open}
+					header="Delete a Friend"
+					onCancel={this.handleCancel}
+					onConfirm={this.handleConfirm}
 				/>
 			</div>
 		);
