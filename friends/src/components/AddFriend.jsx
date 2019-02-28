@@ -34,7 +34,8 @@ class AddFriend extends React.Component {
 			name: '',
 			age: null,
 			email: ''
-		}
+		},
+		error: null
 	};
 
 	handleChanges = (e) => {
@@ -47,9 +48,19 @@ class AddFriend extends React.Component {
 	};
 
 	postFriend = () => {
-		console.log('post freind');
-		this.props.postNewFriend(this.state.friend);
-		this.props.history.push('/');
+		const { name, age, email } = this.state.friend;
+		const formIsCorrect = name && age && email > 1;
+
+		if (formIsCorrect) {
+			console.log('post freind');
+			this.props.postNewFriend(this.state.friend);
+			this.props.history.push('/');
+		} else {
+			this.setState({ error: true });
+			setTimeout(() => {
+				this.setState({ error: null });
+			}, 3000);
+		}
 	};
 
 	render() {
@@ -65,6 +76,7 @@ class AddFriend extends React.Component {
 					<input type="email" onChange={this.handleChanges} name="email" placeholder="email" />
 				</label>
 				<ButtonWrapper onClick={this.postFriend}>Submit</ButtonWrapper>
+				{this.state.error && <h3 style={{textAlign:'center'}}>Try Again, Form incorect</h3>}
 			</FromWrapper>
 		);
 	}

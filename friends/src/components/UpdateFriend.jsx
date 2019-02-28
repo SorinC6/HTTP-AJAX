@@ -22,11 +22,11 @@ const FromWrapper = styled.div`
 	}
 `;
 
-const LinkWrapper = styled(Link)`
-   text-align:center;
-   text-decoration:none;
-   border-style:double;
-   padding:20px;
+const ButtonWrapper = styled.button`
+	text-align: center;
+	text-decoration: none;
+	border-style: double;
+	padding: 20px;
 `;
 
 const UpdateFriend = (props) => {
@@ -60,9 +60,7 @@ const UpdateFriend = (props) => {
 					placeholder="email..."
 				/>
 			</label>
-			<LinkWrapper to="/" onClick={props.updateFriend}>
-				Update Friend
-			</LinkWrapper>
+			<ButtonWrapper onClick={props.updateFriend}>Update Friend</ButtonWrapper>
 		</FromWrapper>
 	);
 };

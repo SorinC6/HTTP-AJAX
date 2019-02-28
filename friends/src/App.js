@@ -5,7 +5,7 @@ import AddFriend from './components/AddFriend';
 import UpdateFriend from './components/UpdateFriend';
 import styled from 'styled-components';
 import './App.css';
-import { Route } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 import { Confirm } from 'semantic-ui-react';
 
 const StyledContainer = styled.div`
@@ -25,6 +25,7 @@ class App extends Component {
 			deleteError: '',
 			loading: false,
 			open: false,
+			result: null,
 			emptyFriend: {
 				name: '',
 				age: '',
@@ -38,7 +39,8 @@ class App extends Component {
 		axios
 			.get('http://localhost:5000/friends')
 			.then((res) => this.setFriends(res.data))
-			.catch((err) => this.setError(err.message));
+			.catch((err) => this.setError(err.message))
+			.finally(this.stopSpinner);
 	}
 
 	addNewFriend = (friend) => {
@@ -51,12 +53,13 @@ class App extends Component {
 
 	deleteFriend = (id) => {
 		//console.log(id)
-		this.show();
-      
-		axios
-			.delete(`http://localhost:5000/friends/${id}`)
-			.then((res) => this.setFriends(res.data))
-			.catch((err) => this.setState({ deleteError: err.message }));
+		this.setState({ open: true });
+		if (this.state.result === true) {
+			axios
+				.delete(`http://localhost:5000/friends/${id}`)
+				.then((res) => this.setFriends(res.data))
+				.catch((err) => this.setState({ deleteError: err.message }));
+		}
 	};
 
 	populateInput = (id) => {
@@ -65,11 +68,17 @@ class App extends Component {
 	};
 
 	updateFriend = () => {
-		console.log(this.state.emptyFriend.id);
+		// console.log(this.state.emptyFriend.id);
+		// const { name, age, email } = this.state.emptyFriend;
+		// console.log(name, age, email);
+		// let formCorect = name && age && email > 0;
+		// console.log(formCorect);
+		// console.log('Success');
 		axios
 			.put(`http://localhost:5000/friends/${this.state.emptyFriend.id}`, this.state.emptyFriend)
 			.then((res) => this.setFriends(res.data))
 			.catch((err) => console.log(err));
+		this.props.history.push('/');
 	};
 
 	handleChanges = (e) => {
@@ -90,6 +99,7 @@ class App extends Component {
 	};
 
 	setError = (error) => {
+		this.stopSpinner();
 		this.setState({ error: error });
 	};
 
@@ -102,16 +112,22 @@ class App extends Component {
 	};
 
 	show = () => this.setState({ open: true });
-	handleConfirm = () => this.setState({ open: false });
-	handleCancel = () => this.setState({ open: false });
+	handleConfirm = () => this.setState({ open: false, result: true });
+	handleCancel = () => this.setState({ open: false, result: false });
 
 	render() {
+		console.log('State  ', this.state);
 		if (this.state.loading) {
 			return <StyledContainer>Loading...</StyledContainer>;
 		}
 
 		if (this.state.error) {
-			return <StyledContainer>Argh!! Bad Fatching {this.state.error}</StyledContainer>;
+			return (
+				<div>
+					<h1>something went wrong...</h1>
+					<h3>{`${this.state.error}`}</h3>
+				</div>
+			);
 		}
 
 		return (
@@ -147,15 +163,12 @@ class App extends Component {
 						/>
 					)}
 				/>
-				<Confirm
-					open={this.state.open}
-					header="Delete a Friend"
-					onCancel={this.handleCancel}
-					onConfirm={this.handleConfirm}
-				/>
+				<Confirm open={this.state.open} onCancel={this.handleCancel} onConfirm={this.handleConfirm} />
 			</div>
 		);
 	}
 }
 
-export default App;
+const AppWithRouter = withRouter(App);
+
+export default AppWithRouter;
