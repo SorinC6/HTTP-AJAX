@@ -32,7 +32,7 @@ class AddFriend extends React.Component {
 	state = {
 		friend: {
 			name: '',
-			age: null,
+			age: '',
 			email: ''
 		},
 		error: null
@@ -49,8 +49,9 @@ class AddFriend extends React.Component {
 
 	postFriend = () => {
 		const { name, age, email } = this.state.friend;
-		const formIsCorrect = name && age && email > 1;
-
+		const formIsCorrect = (name && email && age) > 1;
+		console.log(formIsCorrect);
+		console.log('addd');
 		if (formIsCorrect) {
 			console.log('post freind');
 			this.props.postNewFriend(this.state.friend);
@@ -64,6 +65,7 @@ class AddFriend extends React.Component {
 	};
 
 	render() {
+		console.log(this.state.friend);
 		return (
 			<FromWrapper>
 				<label>
@@ -76,7 +78,7 @@ class AddFriend extends React.Component {
 					<input type="email" onChange={this.handleChanges} name="email" placeholder="email" />
 				</label>
 				<ButtonWrapper onClick={this.postFriend}>Submit</ButtonWrapper>
-				{this.state.error && <h3 style={{textAlign:'center'}}>Try Again, Form incorect</h3>}
+				{this.state.error && <h3 style={{ textAlign: 'center' }}>Try Again, Form incorect</h3>}
 			</FromWrapper>
 		);
 	}

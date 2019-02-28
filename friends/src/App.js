@@ -28,7 +28,7 @@ class App extends Component {
 			result: null,
 			emptyFriend: {
 				name: '',
-				age: '',
+				age: 1,
 				email: ''
 			}
 		};
@@ -44,7 +44,7 @@ class App extends Component {
 	}
 
 	addNewFriend = (friend) => {
-		//console.log('test test');
+		console.log('test test');
 		axios
 			.post('http://localhost:5000/friends', friend)
 			.then((res) => this.setFriends(res.data))
@@ -116,7 +116,7 @@ class App extends Component {
 	handleCancel = () => this.setState({ open: false, result: false });
 
 	render() {
-		console.log('State  ', this.state);
+		//console.log('State  ', this.state);
 		if (this.state.loading) {
 			return <StyledContainer>Loading...</StyledContainer>;
 		}
